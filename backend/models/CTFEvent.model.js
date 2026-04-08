@@ -26,5 +26,10 @@ const CTFEvent = db.define('ctf_events', {
         type: DataTypes.DATE,
         allowNull: false
     },
+}, {
+    freezeTableName: true,
+    createdAt: true,
+    updatedAt: true,
+    underscored: true
 });
 export default CTFEvent;
