@@ -1,11 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import sequelize from './configs/database.js';
 import cookieParser from 'cookie-parser';
 import routes from './routes/index.route.js';
-import Admin from './models/Admin.model.js';
-import bcrypt from 'bcrypt';
+import { sequelize } from './models/index.model.js';
 
 dotenv.config();
 
@@ -39,13 +37,13 @@ app.listen(PORT, () => {
     sequelize.authenticate()
       .then(async () => {
         console.log('Connected to the database.');
-        // Admin.sync({ alter: true })
-        //   .then(() => {
-        //     console.log('Admin table synced successfully.');
-        //   })
-        //   .catch((err) => {
-        //     console.error('Error syncing Admin table:', err);
-        //   });
+        sequelize.sync({ alter: true })
+          .then(() => {
+            console.log('Tables synced successfully.');
+          })
+          .catch((err) => {
+            console.error('Error syncing tables:', err);
+          });
       });
   } catch (error) {
     console.error('Error connecting to the database:', error);
