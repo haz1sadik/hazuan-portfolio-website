@@ -6,6 +6,12 @@ export const verifyToken = (req, res, next) => {
     if (!authHeader) {
         return res.status(401).json({ message: 'Access Denied: Please login.' });
     }
+
+    const refreshToken = req.cookies.refreshToken;
+    if (!refreshToken) {
+        return res.status(401).json({ message: 'Access Denied: Please login.' });
+    }
+
     const token = authHeader && authHeader.split(' ')[0] === 'Bearer' ? authHeader.split(' ')[1] : null;
     if (!token) {
         return res.status(401).json({ message: 'Access Denied: Please login.' });

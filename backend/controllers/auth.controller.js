@@ -1,4 +1,4 @@
-import Admin from "../models/Admin.model.js";
+import { Admin } from "../models/index.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -18,10 +18,10 @@ export const login = async (req, res) => {
         if (!match) return res.status(400).json({ message: "The password is incorrect." });
         const adminId = admin.id;
         const adminUsername = admin.username;
-        const accessToken = jwt.sign({ adminId, adminUsername }, process.env.ACCESS_TOKEN_SECRET, {
+        const accessToken = jwt.sign({ id: adminId, username: adminUsername }, process.env.ACCESS_TOKEN_SECRET, {
             expiresIn: "5m"
         });
-        const refreshToken = jwt.sign({ adminId, adminUsername }, process.env.REFRESH_TOKEN_SECRET, {
+        const refreshToken = jwt.sign({ id: adminId, username: adminUsername }, process.env.REFRESH_TOKEN_SECRET, {
             expiresIn: "1h"
         });
 
@@ -83,14 +83,14 @@ export const refresh = async (req, res) => {
     try {
         const admin = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
 
-        const adminId = admin.adminId;
-        const adminUsername = admin.adminUsername;
+        const adminId = admin.id;
+        const adminUsername = admin.username;
 
-        const accessToken = jwt.sign({ adminId, adminUsername }, process.env.ACCESS_TOKEN_SECRET, {
+        const accessToken = jwt.sign({ id: adminId, username: adminUsername }, process.env.ACCESS_TOKEN_SECRET, {
             expiresIn: "5m"
         });
 
-        const newRefreshToken = jwt.sign({ adminId, adminUsername }, process.env.REFRESH_TOKEN_SECRET, {
+        const newRefreshToken = jwt.sign({ id: adminId, username: adminUsername }, process.env.REFRESH_TOKEN_SECRET, {
             expiresIn: "1h"
         });
 
