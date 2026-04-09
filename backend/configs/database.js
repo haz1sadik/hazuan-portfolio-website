@@ -11,7 +11,11 @@ const {
 const config = {
     host: DATABASE_HOST,
     dialect: "postgres",
+    timezone: "+08:00",
     logging: false,
+    dialectOptions: {
+        useUTC: true,
+    },
     pool: {
         max: 15,
         min: 0,

@@ -5,6 +5,8 @@ import cookieParser from 'cookie-parser';
 import routes from './routes/index.route.js';
 import { sequelize } from './models/index.model.js';
 
+import Admin from './models/Admin.model.js';
+
 dotenv.config();
 
 const app = express();
@@ -16,13 +18,13 @@ app.use(express.json());
 app.use(cookieParser());
 app.use("/api", routes);
 
-// Routes
+// Health Check Routes
 app.get('/api/server-health', (req, res) => {
   res.send('Server is healthy!');
 });
-app.get('/api/database-health', (req, res) => {
+app.get('/api/database-health', async (req, res) => {
   try {
-    sequelize.authenticate();
+    await sequelize.authenticate();
     res.send('Database is healthy!');
   } catch (error) {
     console.error('Error connecting to the database:', error);
@@ -37,12 +39,12 @@ app.listen(PORT, () => {
     sequelize.authenticate()
       .then(async () => {
         console.log('Connected to the database.');
-        sequelize.sync({ alter: true })
+        sequelize.sync()
           .then(() => {
-            console.log('Tables synced successfully.');
+            console.log('Database synced successfully.');
           })
           .catch((err) => {
-            console.error('Error syncing tables:', err);
+            console.error('Error syncing Database:', err);
           });
       });
   } catch (error) {
