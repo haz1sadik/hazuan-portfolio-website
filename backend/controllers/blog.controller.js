@@ -32,6 +32,10 @@ export const createBlog = async (req, res) => {
     try {
         const { title, content } = req.body;
         const { id } = req.user;
+
+        if (!title || !content) {
+            return res.status(400).json({ message: "Title and content are required." });
+        }
         
         let baseSlug = title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
         let slug = baseSlug;
@@ -52,6 +56,11 @@ export const updateBlog = async (req, res) => {
     try {
         const { id } = req.params;
         const { title, content } = req.body;
+
+        if (!title || !content) {
+            return res.status(400).json({ message: "Title and content are required." });
+        }
+
         const blog = await Blog.findByPk(id);
         if (!blog) {
             return res.status(404).json({ message: "Blog not found." });
