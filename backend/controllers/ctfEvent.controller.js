@@ -1,4 +1,4 @@
-import { CTFEvent, Admin } from "../models/index.model.js"
+import { CTFEvent } from "../models/index.model.js"
 
 export const getCTFEvents = async (req, res) => {
     try {
