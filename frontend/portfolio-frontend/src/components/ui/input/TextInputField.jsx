@@ -8,7 +8,7 @@ const icons = {
   circleUser: (
     <FontAwesomeIcon
       icon={faCircleUser}
-      className="flex !w-[1.125rem] !h-[1.125rem] justify-center items-center text-[#718ebf]"
+      className="flex w-4.5 h-4.5 justify-center items-center text-[#718ebf]"
     />
   ),
 };
@@ -25,7 +25,7 @@ const TextInputField = ({
   required = false
 }) => {
   return (
-    <div className="flex flex-col gap-[0.5rem] w-[20rem] justify-center items-start shrink-0">
+    <div className="flex flex-col gap-2 w-[20rem] justify-center items-start shrink-0">
       {label && (
         <label htmlFor={name} className="text-md text-black">
           {label}
@@ -49,9 +49,9 @@ const TextInputField = ({
           disabled={disabled}
           required={required}
           className={`
-                        w-full h-[2.8125rem] border-2 border-[#a8b9c7] px-[1rem] py-[0.625rem] text-sm rounded-[1.25rem]
+                        w-full h-11.25 border-2 border-[#a8b9c7] px-4 py-2.5 text-sm rounded-[1.25rem]
                         focus:outline-none focus:ring-2 focus:ring-hazuan-primary focus:border-hazuan-primary
-                        disabled:bg-[#DFEAF2] disabled:cursor-not-allowed disabled:border-1
+                        disabled:bg-[#DFEAF2] disabled:cursor-not-allowed disabled:border
                         ${leftIcon ? "pl-10" : ""} 
                     `}
         />
