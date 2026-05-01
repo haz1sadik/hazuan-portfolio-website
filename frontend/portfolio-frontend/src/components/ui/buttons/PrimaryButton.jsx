@@ -40,7 +40,7 @@ const PrimaryButton = ({
   );
 
   const style =
-    "inline-flex font-semibold items-center justify-center gap-[0.5rem] rounded-full px-[1.25rem] py-[0.625rem] bg-hazuan-primary hover:bg-hazuan-primary-hover disabled:bg-hazuan-primary/45 text-white text-sm cursor-pointer disabled:cursor-not-allowed";
+    "inline-flex font-semibold text-[0.975rem] items-center justify-center gap-[0.5rem] rounded-full px-[1.25rem] py-[0.625rem] bg-hazuan-primary hover:bg-hazuan-primary-hover disabled:bg-hazuan-primary/45 text-white text-sm cursor-pointer disabled:cursor-not-allowed";
 
   if (href) {
     return (

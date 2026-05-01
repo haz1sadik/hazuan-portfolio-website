@@ -30,6 +30,7 @@ const SecondaryButton = ({
   rightIcon = false,
   text = "Button",
   disabled = false,
+  color = "hover:bg-hazuan-primary-hover disabled:bg-hazuan-primary/45 text-hazuan-primary border-hazuan-primary bg-transparent",
 }) => {
   const content = (
     <>
@@ -40,7 +41,7 @@ const SecondaryButton = ({
   );
 
   const style =
-    "inline-flex font-semibold items-center justify-center gap-[0.5rem] border-1 border-hazuan-primary rounded-full px-[1.25rem] py-[0.625rem] bg-transparent hover:bg-hazuan-primary-hover disabled:bg-hazuan-primary/45 text-hazuan-primary hover:text-white text-sm cursor-pointer disabled:cursor-not-allowed";
+    `inline-flex font-semibold items-center justify-center gap-[0.5rem] border-2 rounded-full px-[1.25rem] py-[0.625rem] ${color} hover:text-white text-sm cursor-pointer disabled:cursor-not-allowed`;
 
   if (href) {
     return (
