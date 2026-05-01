@@ -1,8 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 @import "tailwindcss";
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+}
+
+@theme {
+  --color-hazuan-primary: #7a62f0;
+  --color-hazuan-primary-hover: #8a73f5;
+  --color-hazuan-accent: #efebff;
+  --font-inter: Inter, "sans-serif";
 }
 
 @theme inline {
