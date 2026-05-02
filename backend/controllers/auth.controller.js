@@ -46,7 +46,7 @@ export const login = async (req, res) => {
 export const logout = async (req, res) => {
     try {
         const refreshToken = req.cookies.refreshToken;
-        if (!refreshToken) return res.status(204).json({ message: "No refresh token found." });
+        if (!refreshToken) return res.sendStatus(200);
         const admin = await Admin.findAll({
             where: {
                 refresh_token: refreshToken,
