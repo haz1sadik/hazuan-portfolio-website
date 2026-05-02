@@ -24,8 +24,20 @@ export default function DashboardLayout({ children }) {
         }
     }
 
+    if (loading) {
+        return (
+            <section className="flex min-h-screen items-center justify-center bg-gray-100">
+                <p className="text-sm font-medium text-gray-500">Loading dashboard...</p>
+            </section>
+        );
+    }
+
     if (!isAuthenticated) {
-        return null;
+        return (
+            <section className="flex min-h-screen items-center justify-center bg-gray-100">
+                <p className="text-sm font-medium text-gray-500">Redirecting to login...</p>
+            </section>
+        );
     }
     return (
         <section className="flex flex-col min-h-screen bg-gray-100">

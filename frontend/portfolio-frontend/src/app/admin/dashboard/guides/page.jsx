@@ -1,9 +1,51 @@
-import React from 'react'
+'use client';
+
+import { PostCardList } from "../PostCard";
+import { useEffect, useState } from "react";
+import api from "@/lib/axios";
 
 const GuidePage = () => {
-  return (
-    <div>GuidePage</div>
-  )
-}
+  const [posts, setPosts] = useState([]);
 
-export default GuidePage
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await api.get("/guides");
+        setPosts(res.data);
+        //console.log(res.data);
+
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
+  const handleDelete = async (post) => {
+    if (!post?.id) return;
+    const confirmed = window.confirm("Delete this guide?");
+    if (!confirmed) return;
+
+    try {
+      await api.delete(`/guides/${post.id}`);
+      setPosts((prev) => prev.filter((item) => item.id !== post.id));
+    } catch (error) {
+      console.error("Error deleting guide:", error);
+    }
+  };
+
+  return (
+    <div className="flex flex-col gap-6">
+      <h1 className="text-2xl font-semibold text-gray-900">Guides</h1>
+      <PostCardList
+        posts={posts}
+        getEditHref={(post) => `/admin/dashboard/guides/${post.slug}/edit`}
+        getDeleteHref={(post) => `/admin/dashboard/guides/${post.slug}/delete`}
+        getDeleteHandler={(post) => () => handleDelete(post)}
+      />
+    </div>
+  );
+};
+
+export default GuidePage;
