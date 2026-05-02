@@ -14,7 +14,7 @@ const BlogPage = () => {
         const res = await api.get("/blogs");
         setPosts(res.data);
         //console.log(res.data);
-        
+
       } catch (error) {
         console.error("Error fetching posts:", error);
       }
