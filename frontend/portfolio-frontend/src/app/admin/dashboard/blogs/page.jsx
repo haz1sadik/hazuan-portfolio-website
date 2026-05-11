@@ -3,6 +3,7 @@
 import { PostCardList } from "../PostCard";
 import { useEffect, useState } from "react";
 import api from "@/lib/axios";
+import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 
 const BlogPage = () => {
 
@@ -38,7 +39,10 @@ const BlogPage = () => {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-semibold text-gray-900">Blogs</h1>
+      <div className="flex justify-between">
+        <h1 className="text-2xl font-semibold text-gray-900">Blogs</h1>
+        <PrimaryButton href="/admin/dashboard/blogs/new" leftIcon text="New Blog" />
+      </div>
       <PostCardList
         posts={posts}
         getEditHref={(post) => `/admin/dashboard/blogs/${post.slug}/edit`}

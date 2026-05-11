@@ -1,6 +1,11 @@
 'use client';
 
 import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPenToSquare,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 
 const formatDate = (value) => {
     if (!value) return null;
@@ -38,22 +43,22 @@ const Badge = ({ label, variant = "default" }) => {
 const ActionLink = ({ href, label, variant }) => {
     const style =
         variant === "danger"
-            ? "inline-flex items-center justify-center rounded-full border border-red-500 px-4 py-2 text-xs font-semibold text-red-600 hover:bg-red-50"
-            : "inline-flex items-center justify-center rounded-full border border-hazuan-primary px-4 py-2 text-xs font-semibold text-hazuan-primary hover:bg-hazuan-primary hover:text-white";
+            ? "inline-flex items-center justify-center rounded-full border border-red-500 px-4 py-2 text-lg font-semibold text-red-600 hover:bg-red-50"
+            : "inline-flex items-center justify-center rounded-full border border-hazuan-primary px-4 py-2 text-lg font-semibold text-hazuan-primary hover:bg-hazuan-primary hover:text-white";
 
     const resolved = resolveHref(href);
 
     if (!resolved) {
         return (
             <span className={`${style} opacity-50 cursor-not-allowed`} aria-disabled="true">
-                {label}
+                {label === "Edit" ? <FontAwesomeIcon icon={faPenToSquare} /> : "Edit"}
             </span>
         );
     }
 
     return (
         <Link href={resolved} className={style}>
-            {label}
+            {label === "Edit" ? <FontAwesomeIcon icon={faPenToSquare} /> : "Edit"}
         </Link>
     );
 };
@@ -61,20 +66,20 @@ const ActionLink = ({ href, label, variant }) => {
 const ActionButton = ({ onClick, label, variant }) => {
     const style =
         variant === "danger"
-            ? "inline-flex items-center justify-center rounded-full border border-red-500 px-4 py-2 text-xs font-semibold text-red-600 hover:bg-red-50"
-            : "inline-flex items-center justify-center rounded-full border border-hazuan-primary px-4 py-2 text-xs font-semibold text-hazuan-primary hover:bg-hazuan-primary hover:text-white";
+            ? "inline-flex items-center justify-center rounded-full border border-red-500 px-4 py-2 text-lg font-semibold text-red-600 hover:bg-red-100 cursor-pointer"
+            : "inline-flex items-center justify-center rounded-full border border-hazuan-primary px-4 py-2 text-lg font-semibold text-hazuan-primary hover:bg-hazuan-primary hover:text-white cursor-pointer";
 
     if (!onClick) {
         return (
             <span className={`${style} opacity-50 cursor-not-allowed`} aria-disabled="true">
-                {label}
+                {label === "Delete" ? <FontAwesomeIcon icon={faTrash} /> : "Delete"}
             </span>
         );
     }
 
     return (
         <button type="button" onClick={onClick} className={style}>
-            {label}
+            {label === "Delete" ? <FontAwesomeIcon icon={faTrash} /> : "Delete"}
         </button>
     );
 };
