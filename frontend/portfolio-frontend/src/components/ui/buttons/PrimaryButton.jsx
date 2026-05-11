@@ -30,6 +30,7 @@ const PrimaryButton = ({
   rightIcon = false,
   text = "Button",
   disabled = false,
+  type = "button",
 }) => {
   const content = (
     <>
@@ -52,7 +53,12 @@ const PrimaryButton = ({
 
   return (
     <>
-      <button onClick={onClick} className={style} disabled={disabled}>
+      <button
+        type={type}
+        onClick={onClick}
+        className={style}
+        disabled={disabled}
+      >
         {content}
       </button>
     </>

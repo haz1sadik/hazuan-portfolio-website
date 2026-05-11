@@ -32,7 +32,7 @@ const LoginPage = () => {
                 <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                     <TextInputField type="text" name="username" value={formState.username} onChange={handleChange} label="Username" placeholder="Enter username" required />
                     <TextInputField type="password" name="password" value={formState.password} onChange={handleChange} label="Password" placeholder="Enter password" required />
-                    <PrimaryButton text="Log In" disabled={loading}/>
+                    <PrimaryButton type="submit" text="Log In" disabled={loading} />
                 </form>
                 {error && (
                     <div className="p-3 px-4 bg-red-200 text-red-700 w-80 rounded-2xl text-wrap flex justify-center items-center">
