@@ -1,6 +1,6 @@
 import api from "@/lib/axios";
 
-const MAX_IMAGE_SIZE_BYTES = 1_000_000;
+const MAX_IMAGE_SIZE_BYTES = 300_000;
 const MAX_IMAGE_DIMENSION = 1080;
 
 const loadImage = (file) =>
