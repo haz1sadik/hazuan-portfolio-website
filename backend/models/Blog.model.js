@@ -22,6 +22,10 @@ const Blog = db.define('blogs', {
         type: DataTypes.TEXT,
         allowNull: false
     },
+    thumbnail_url: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
 }, {
     freezeTableName: true,
     createdAt: true,

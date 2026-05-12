@@ -26,6 +26,10 @@ const CTFEvent = db.define('ctf_events', {
         type: DataTypes.DATE,
         allowNull: false
     },
+    thumbnail_url: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
 }, {
     freezeTableName: true,
     createdAt: true,

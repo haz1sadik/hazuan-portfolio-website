@@ -26,7 +26,7 @@ export const getCTFEventById = async (req, res) => {
 
 export const createCTFEvent = async (req, res) => {
     try {
-        const { name, date, description } = req.body;
+        const { name, date, description, thumbnail_url } = req.body;
 
         if (!name || !date) {
             return res.status(400).json({ message: "Name and date are required." });
@@ -43,7 +43,7 @@ export const createCTFEvent = async (req, res) => {
             return res.status(400).json({ message: "A CTF event with a similar name already exists." });
         }
 
-        const newEvent = await CTFEvent.create({ name, date, description, slug });
+        const newEvent = await CTFEvent.create({ name, date, description, slug, thumbnail_url });
 
         res.status(201).json(newEvent);
     } catch (error) {
@@ -55,7 +55,7 @@ export const createCTFEvent = async (req, res) => {
 export const updateCTFEvent = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, date, description } = req.body;
+        const { name, date, description, thumbnail_url } = req.body;
 
         if (!name || !date) {
             return res.status(400).json({ message: "Name and date are required." });
@@ -66,7 +66,7 @@ export const updateCTFEvent = async (req, res) => {
             return res.status(404).json({ message: "CTF event not found." });
         }
 
-        await event.update({ name, date, description });
+        await event.update({ name, date, description, thumbnail_url });
 
         res.json(event);
     } catch (error) {

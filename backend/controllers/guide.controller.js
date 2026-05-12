@@ -16,7 +16,7 @@ export const getGuideById = async (req, res) => {
         const { id } = req.params;
         const guide = await Guide.findByPk(id, {
             attributes: { exclude: ['adminId'] },
-            include: [{ model: Admin, attributes: ['name'] }], 
+            include: [{ model: Admin, attributes: ['name'] }],
         });
         if (!guide) {
             return res.status(404).json({ message: "Guide not found." });
@@ -30,7 +30,7 @@ export const getGuideById = async (req, res) => {
 
 export const createGuide = async (req, res) => {
     try {
-        const { title, content, category, difficulty } = req.body;
+        const { title, content, category, difficulty, thumbnail_url } = req.body;
         const { id } = req.user;
 
         if (!title || !content) {
@@ -48,7 +48,7 @@ export const createGuide = async (req, res) => {
             counter++;
         }
 
-        const newGuide = await Guide.create({ title, content, slug, adminId: id, category, difficulty });
+        const newGuide = await Guide.create({ title, content, slug, adminId: id, category, difficulty, thumbnail_url });
 
         res.status(201).json(newGuide);
     } catch (error) {
@@ -60,7 +60,7 @@ export const createGuide = async (req, res) => {
 export const updateGuide = async (req, res) => {
     try {
         const { id } = req.params;
-        const { title, content, category, difficulty } = req.body;
+        const { title, content, category, difficulty, thumbnail_url } = req.body;
 
         if (!title || !content) {
             return res.status(400).json({ message: "Title and content are required." });
@@ -76,8 +76,8 @@ export const updateGuide = async (req, res) => {
         if (guide.adminId !== req.user.id) {
             return res.status(403).json({ message: "You are not authorized to update this guide." });
         }
-        
-        await guide.update({ title, content, category, difficulty });
+
+        await guide.update({ title, content, category, difficulty, thumbnail_url });
         res.json(guide);
     } catch (error) {
         console.log(error);

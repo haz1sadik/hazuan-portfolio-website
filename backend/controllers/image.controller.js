@@ -44,7 +44,7 @@ export const getUploadUrl = async (req, res) => {
         const url = await getUrl(fileName, contentType);
         const publicUrl = `${process.env.R2_PUBLIC_DOMAIN}/${fileName}`;
         await Image.create({ r2_key: fileName, public_url: publicUrl, alt_text: `${fileName} image` });
-        res.json({ url, publicUrl });
+        res.json({ url, public_url: publicUrl, publicUrl });
     } catch (error) {
         console.error("Error generating upload URL:", error);
         res.status(500).json({ message: "Failed to generate upload URL" });

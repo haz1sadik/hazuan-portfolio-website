@@ -30,6 +30,10 @@ const Guide = db.define('guides', {
         type: DataTypes.STRING,
         allowNull: true
     },
+    thumbnail_url: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
 }, {
     freezeTableName: true,
     createdAt: true,

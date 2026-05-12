@@ -15,7 +15,7 @@ export const getBlogById = async (req, res) => {
         const { id } = req.params;
         const blog = await Blog.findByPk(id, {
             attributes: { exclude: ['adminId'] },
-            include: [{ model: Admin, attributes: ['name'] }], 
+            include: [{ model: Admin, attributes: ['name'] }],
         });
         if (!blog) {
             return res.status(404).json({ message: "Blog not found." });
@@ -30,13 +30,13 @@ export const getBlogById = async (req, res) => {
 export const createBlog = async (req, res) => {
 
     try {
-        const { title, content } = req.body;
+        const { title, content, thumbnail_url } = req.body;
         const { id } = req.user;
 
         if (!title || !content) {
             return res.status(400).json({ message: "Title and content are required." });
         }
-        
+
         let baseSlug = title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
         let slug = baseSlug;
         let counter = 1;
@@ -44,7 +44,7 @@ export const createBlog = async (req, res) => {
             slug = `${baseSlug}-${counter}`;
             counter++;
         }
-        const newBlog = await Blog.create({ title, content, slug, adminId: id });
+        const newBlog = await Blog.create({ title, content, slug, adminId: id, thumbnail_url });
         res.status(201).json(newBlog);
     } catch (error) {
         console.log(error);
@@ -55,7 +55,7 @@ export const createBlog = async (req, res) => {
 export const updateBlog = async (req, res) => {
     try {
         const { id } = req.params;
-        const { title, content } = req.body;
+        const { title, content, thumbnail_url } = req.body;
 
         if (!title || !content) {
             return res.status(400).json({ message: "Title and content are required." });
@@ -68,7 +68,7 @@ export const updateBlog = async (req, res) => {
         if (blog.adminId !== req.user.id) {
             return res.status(403).json({ message: "You are not authorized to update this blog." });
         }
-        await blog.update({ title, content });
+        await blog.update({ title, content, thumbnail_url });
         res.json(blog);
     } catch (error) {
         console.log(error);
