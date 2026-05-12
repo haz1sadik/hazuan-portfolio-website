@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import TextInputField from "@/components/ui/input/TextInputField";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import RichTextEditor from "@/components/common/RichTextEditor";
+import ThumbnailUpload from "@/components/common/ThumbnailUpload";
 import { uploadImageToR2 } from "@/lib/imageUpload";
 import api from "@/lib/axios";
 import { useAuth } from "@/context/AuthContext";
@@ -22,6 +23,7 @@ const EditGuidePage = () => {
     const [category, setCategory] = useState("");
     const [difficulty, setDifficulty] = useState("");
     const [content, setContent] = useState("");
+    const [thumbnailUrl, setThumbnailUrl] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
@@ -53,6 +55,7 @@ const EditGuidePage = () => {
                 setCategory(res.data?.category || "");
                 setDifficulty(res.data?.difficulty || "");
                 setContent(res.data?.content || "");
+                setThumbnailUrl(res.data?.thumbnail_url || "");
             } catch (err) {
                 if (!isMounted) return;
                 setError(err?.response?.data?.message || "Failed to load guide.");
@@ -82,7 +85,7 @@ const EditGuidePage = () => {
             setIsSubmitting(true);
             await api.put(
                 `/guides/${guideId}`,
-                { title, content, category, difficulty },
+                { title, content, category, difficulty, thumbnail_url: thumbnailUrl || null },
                 { headers: { Authorization: `Bearer ${accessToken}` } }
             );
             setSuccess("Guide updated successfully.");
@@ -96,6 +99,13 @@ const EditGuidePage = () => {
 
     const handleImageUpload = (file) =>
         uploadImageToR2({ file, accessToken });
+
+    const handleThumbnailUpload = async (file) => {
+        if (!accessToken) {
+            throw new Error("Please login again to upload a thumbnail.");
+        }
+        return uploadImageToR2({ file, accessToken });
+    };
 
     return (
         <div className="flex flex-col gap-6">
@@ -162,6 +172,14 @@ const EditGuidePage = () => {
                                 placeholder="Write your guide content here..."
                             />
                         </div>
+
+                        <ThumbnailUpload
+                            label="Thumbnail"
+                            value={thumbnailUrl}
+                            onChange={setThumbnailUrl}
+                            onUpload={handleThumbnailUpload}
+                            disabled={isSubmitting}
+                        />
                     </>
                 )}
 

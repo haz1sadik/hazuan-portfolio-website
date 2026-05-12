@@ -17,6 +17,13 @@ export function AuthProvider({ children }) {
     useEffect(() => {
         let isMounted = true;
 
+        const storedToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+        if (storedToken) {
+            setAccessToken(storedToken);
+            api.defaults.headers.common.Authorization = `Bearer ${storedToken}`;
+            setIsAuthenticated(true);
+        }
+
         const restoreSession = async () => {
             setLoading(true);
             setError(null);
@@ -32,13 +39,18 @@ export function AuthProvider({ children }) {
                 if (token) {
                     setAccessToken(token);
                     api.defaults.headers.common.Authorization = `Bearer ${token}`;
+                    if (typeof window !== "undefined") {
+                        localStorage.setItem("accessToken", token);
+                    }
                     setIsAuthenticated(true);
                 } else {
                     setIsAuthenticated(false);
                 }
             } catch (err) {
                 if (!isMounted || hasActiveSessionRef.current) return;
-                setIsAuthenticated(false);
+                if (!storedToken) {
+                    setIsAuthenticated(false);
+                }
             } finally {
                 if (isMounted) setLoading(false);
             }
@@ -60,6 +72,9 @@ export function AuthProvider({ children }) {
             if (token) {
                 setAccessToken(token);
                 api.defaults.headers.common.Authorization = `Bearer ${token}`;
+                if (typeof window !== "undefined") {
+                    localStorage.setItem("accessToken", token);
+                }
                 setIsAuthenticated(true);
                 hasActiveSessionRef.current = true;
                 return true;
@@ -95,6 +110,9 @@ export function AuthProvider({ children }) {
             setIsAuthenticated(false);
             setAccessToken(null);
             delete api.defaults.headers.common.Authorization;
+            if (typeof window !== "undefined") {
+                localStorage.removeItem("accessToken");
+            }
             setAuthenticating(false);
         }
     }, []);

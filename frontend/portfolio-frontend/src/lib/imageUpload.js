@@ -95,5 +95,5 @@ export async function uploadImageToR2({ file, accessToken }) {
         body: compressedFile,
     });
 
-    return data.publicUrl;
+    return data.public_url || data.publicUrl;
 }

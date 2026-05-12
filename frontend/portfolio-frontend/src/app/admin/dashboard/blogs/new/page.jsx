@@ -4,6 +4,7 @@ import { useState } from "react";
 import TextInputField from "@/components/ui/input/TextInputField";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import RichTextEditor from "@/components/common/RichTextEditor";
+import ThumbnailUpload from "@/components/common/ThumbnailUpload";
 import { uploadImageToR2 } from "@/lib/imageUpload";
 import api from "@/lib/axios";
 import { useAuth } from "@/context/AuthContext";
@@ -13,6 +14,7 @@ const NewBlogPage = () => {
   const { accessToken } = useAuth();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -32,12 +34,13 @@ const NewBlogPage = () => {
       setIsSubmitting(true);
       await api.post(
         "/blogs",
-        { title, content },
+        { title, content, thumbnail_url: thumbnailUrl || null },
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
       setSuccess("Blog created successfully.");
       setTitle("");
       setContent("");
+      setThumbnailUrl("");
     } catch (err) {
       setError(
         err?.response?.data?.message || "Failed to create the blog."
@@ -50,6 +53,13 @@ const NewBlogPage = () => {
 
   const handleImageUpload = (file) =>
     uploadImageToR2({ file, accessToken });
+
+  const handleThumbnailUpload = async (file) => {
+    if (!accessToken) {
+      throw new Error("Please login again to upload a thumbnail.");
+    }
+    return uploadImageToR2({ file, accessToken });
+  };
 
   return (
     <div className="flex flex-col gap-6">
@@ -83,6 +93,14 @@ const NewBlogPage = () => {
             placeholder="Write your blog content here..."
           />
         </div>
+
+        <ThumbnailUpload
+          label="Thumbnail"
+          value={thumbnailUrl}
+          onChange={setThumbnailUrl}
+          onUpload={handleThumbnailUpload}
+          disabled={isSubmitting}
+        />
 
         {error && <p className="text-sm text-red-600">{error}</p>}
         {success && <p className="text-sm text-green-600">{success}</p>}

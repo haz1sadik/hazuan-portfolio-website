@@ -43,10 +43,22 @@ const WriteupPage = () => {
     }, {});
   }, [events]);
 
+  const eventThumbnailMap = useMemo(() => {
+    return events.reduce((acc, eventItem) => {
+      acc[eventItem.id] = eventItem.thumbnail_url || "";
+      return acc;
+    }, {});
+  }, [events]);
+
   const filteredPosts = useMemo(() => {
-    if (!selectedEventId) return posts;
-    return posts.filter((post) => post.event_id === selectedEventId);
-  }, [posts, selectedEventId]);
+    const list = selectedEventId
+      ? posts.filter((post) => post.event_id === selectedEventId)
+      : posts;
+    return list.map((post) => ({
+      ...post,
+      thumbnail_url: eventThumbnailMap[post.event_id] || post.thumbnail_url,
+    }));
+  }, [posts, selectedEventId, eventThumbnailMap]);
 
   const groupedPosts = useMemo(() => {
     return filteredPosts.reduce((acc, post) => {

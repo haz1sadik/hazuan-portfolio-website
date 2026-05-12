@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import TextInputField from "@/components/ui/input/TextInputField";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import RichTextEditor from "@/components/common/RichTextEditor";
+import ThumbnailUpload from "@/components/common/ThumbnailUpload";
 import { uploadImageToR2 } from "@/lib/imageUpload";
 import api from "@/lib/axios";
 import { useAuth } from "@/context/AuthContext";
@@ -35,6 +36,7 @@ const EditEventPage = () => {
     const [name, setName] = useState("");
     const [date, setDate] = useState("");
     const [description, setDescription] = useState("");
+    const [thumbnailUrl, setThumbnailUrl] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
@@ -65,6 +67,7 @@ const EditEventPage = () => {
                 setName(res.data?.name || "");
                 setDescription(res.data?.description || "");
                 setDate(toInputDateTime(res.data?.date));
+                setThumbnailUrl(res.data?.thumbnail_url || "");
             } catch (err) {
                 if (!isMounted) return;
                 setError(err?.response?.data?.message || "Failed to load event.");
@@ -98,6 +101,7 @@ const EditEventPage = () => {
                     name,
                     description,
                     date: toIsoString(date),
+                    thumbnail_url: thumbnailUrl || null,
                 },
                 { headers: { Authorization: `Bearer ${accessToken}` } }
             );
@@ -111,6 +115,13 @@ const EditEventPage = () => {
     };
 
     const handleImageUpload = (file) => uploadImageToR2({ file, accessToken });
+
+    const handleThumbnailUpload = async (file) => {
+        if (!accessToken) {
+            throw new Error("Please login again to upload a thumbnail.");
+        }
+        return uploadImageToR2({ file, accessToken });
+    };
 
     return (
         <div className="flex flex-col gap-6">
@@ -157,6 +168,14 @@ const EditEventPage = () => {
                                 placeholder="Write your event description here..."
                             />
                         </div>
+
+                        <ThumbnailUpload
+                            label="Thumbnail"
+                            value={thumbnailUrl}
+                            onChange={setThumbnailUrl}
+                            onUpload={handleThumbnailUpload}
+                            disabled={isSubmitting}
+                        />
                     </>
                 )}
 

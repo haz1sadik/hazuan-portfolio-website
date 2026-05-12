@@ -24,6 +24,8 @@ const NewWriteupPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const selectedEvent = events.find((event) => event.id === eventId);
+  const selectedEventThumbnail = selectedEvent?.thumbnail_url || "";
 
   useEffect(() => {
     let isMounted = true;
@@ -153,6 +155,21 @@ const NewWriteupPage = () => {
               ))}
             </select>
           </div>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <label className="text-md text-black">Event Thumbnail</label>
+          {selectedEventThumbnail ? (
+            <img
+              src={selectedEventThumbnail}
+              alt="Event thumbnail preview"
+              className="h-40 w-full max-w-xl rounded-xl object-cover shadow"
+            />
+          ) : (
+            <p className="text-sm text-gray-500">
+              Select an event to preview its thumbnail.
+            </p>
+          )}
         </div>
 
         <div className="flex flex-col gap-2">
