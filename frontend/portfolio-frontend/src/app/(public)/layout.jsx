@@ -100,7 +100,7 @@ export default function HomescreenLayout({ children }) {
         <section className="min-h-screen bg-[#26422d]">
             <nav className={`sticky top-4 z-50 px-3 transition-transform duration-300 ease-out will-change-transform sm:px-4 md:translate-y-0 ${isNavVisible ? "translate-y-0" : "-translate-y-44"}`}>
                 <div className="mx-auto flex w-full max-w-6xl flex-col items-stretch gap-4 rounded-[28px] border border-white/20 bg-hazuan-primary/50 px-4 py-4 shadow-[0_8px_30px_rgba(74,190,130,0.35)] backdrop-blur-sm sm:rounded-full sm:px-6 sm:py-3 md:flex-row md:items-center md:justify-between md:gap-6">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 justify-center">
                         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 text-xs font-semibold text-white/90">
                             LOGO
                         </div>
