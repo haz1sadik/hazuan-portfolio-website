@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { loginAction, logoutAction, refreshAction } from "../lib/actions/auth-actions.js";
 import api from "../lib/axios.js";
 
@@ -10,7 +10,9 @@ export function AuthProvider({ children }) {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [accessToken, setAccessToken] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [authenticating, setAuthenticating] = useState(false);
     const [error, setError] = useState(null);
+    const hasActiveSessionRef = useRef(false);
 
     useEffect(() => {
         let isMounted = true;
@@ -19,8 +21,13 @@ export function AuthProvider({ children }) {
             setLoading(true);
             setError(null);
             try {
-                const data = await refreshAction();
-                if (!isMounted) return;
+                const data = await Promise.race([
+                    refreshAction(),
+                    new Promise((_, reject) =>
+                        setTimeout(() => reject(new Error("Refresh timeout")), 8000)
+                    ),
+                ]);
+                if (!isMounted || hasActiveSessionRef.current) return;
                 const token = data?.accessToken;
                 if (token) {
                     setAccessToken(token);
@@ -30,7 +37,7 @@ export function AuthProvider({ children }) {
                     setIsAuthenticated(false);
                 }
             } catch (err) {
-                if (!isMounted) return;
+                if (!isMounted || hasActiveSessionRef.current) return;
                 setIsAuthenticated(false);
             } finally {
                 if (isMounted) setLoading(false);
@@ -45,7 +52,7 @@ export function AuthProvider({ children }) {
     }, []);
 
     const login = useCallback(async (username, password) => {
-        setLoading(true);
+        setAuthenticating(true);
         setError(null);
         try {
             const data = await loginAction(username, password);
@@ -54,6 +61,7 @@ export function AuthProvider({ children }) {
                 setAccessToken(token);
                 api.defaults.headers.common.Authorization = `Bearer ${token}`;
                 setIsAuthenticated(true);
+                hasActiveSessionRef.current = true;
                 return true;
             }
             setIsAuthenticated(false);
@@ -65,12 +73,13 @@ export function AuthProvider({ children }) {
             setIsAuthenticated(false);
             return false;
         } finally {
+            setAuthenticating(false);
             setLoading(false);
         }
     }, []);
 
     const logout = useCallback(async () => {
-        setLoading(true);
+        setAuthenticating(true);
         setError(null);
         try {
             const res = await logoutAction();
@@ -86,13 +95,21 @@ export function AuthProvider({ children }) {
             setIsAuthenticated(false);
             setAccessToken(null);
             delete api.defaults.headers.common.Authorization;
-            setLoading(false);
+            setAuthenticating(false);
         }
     }, []);
 
     const value = useMemo(
-        () => ({ isAuthenticated, accessToken, loading, error, login, logout }),
-        [isAuthenticated, accessToken, loading, error, login, logout]
+        () => ({
+            isAuthenticated,
+            accessToken,
+            loading,
+            authenticating,
+            error,
+            login,
+            logout,
+        }),
+        [isAuthenticated, accessToken, loading, authenticating, error, login, logout]
     );
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

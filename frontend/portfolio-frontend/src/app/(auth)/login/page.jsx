@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../../context/AuthContext.jsx";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton.jsx";
@@ -8,7 +8,7 @@ import TextInputField from "@/components/ui/input/TextInputField.jsx";
 import Link from "next/link.js";
 
 const LoginPage = () => {
-    const { login, loading, error } = useAuth();
+    const { login, authenticating, error, isAuthenticated } = useAuth();
     const router = useRouter();
     const [formState, setFormState] = useState({ username: "", password: "" });
 
@@ -25,6 +25,12 @@ const LoginPage = () => {
         }
     };
 
+    useEffect(() => {
+        if (isAuthenticated) {
+            router.push("/admin/dashboard");
+        }
+    }, [isAuthenticated, router]);
+
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
             <section className="flex flex-col bg-white p-10 rounded-4xl items-center justify-center gap-6">
@@ -32,7 +38,7 @@ const LoginPage = () => {
                 <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                     <TextInputField type="text" name="username" value={formState.username} onChange={handleChange} label="Username" placeholder="Enter username" required />
                     <TextInputField type="password" name="password" value={formState.password} onChange={handleChange} label="Password" placeholder="Enter password" required />
-                    <PrimaryButton type="submit" text="Log In" disabled={loading} />
+                    <PrimaryButton type="submit" text="Log In" disabled={authenticating} />
                 </form>
                 {error && (
                     <div className="p-3 px-4 bg-red-200 text-red-700 w-80 rounded-2xl text-wrap flex justify-center items-center">

@@ -40,7 +40,7 @@ const BlogPage = () => {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex justify-between">
-        <h1 className="text-2xl font-semibold text-gray-900">Blogs</h1>
+        <h1 className="text-2xl font-semibold text-gray-900 2xl:mx-60 lg:mx-20">Blogs</h1>
         <PrimaryButton href="/admin/dashboard/blogs/new" leftIcon text="New Blog" />
       </div>
       <PostCardList

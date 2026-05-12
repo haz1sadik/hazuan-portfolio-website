@@ -39,7 +39,7 @@ const GuidePage = () => {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex justify-between">
-        <h1 className="text-2xl font-semibold text-gray-900">Guides</h1>
+        <h1 className="text-2xl font-semibold text-gray-900 lg:px-20 2xl:px-60">Guides</h1>
         <PrimaryButton href="/admin/dashboard/guides/new" leftIcon text="New Guide" />
       </div>
       <PostCardList

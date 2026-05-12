@@ -161,7 +161,7 @@ const PostCard = ({
 };
 
 const PostCardList = ({ posts = [], getEditHref, getDeleteHref, getDeleteHandler }) => (
-    <section className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+    <section className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3 lg:px-20 2xl:px-60">
         {posts.map((post) => (
             <PostCard
                 key={post.id}
