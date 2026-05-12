@@ -2,6 +2,16 @@ import { Admin } from "../models/index.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+const getRefreshCookieOptions = () => {
+    const isProduction = process.env.NODE_ENV === "production";
+    return {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
+    };
+};
+
 export const login = async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -31,11 +41,7 @@ export const login = async (req, res) => {
             }
         });
 
-        res.cookie('refreshToken', refreshToken, {
-            httpOnly: true,
-            maxAge: 24 * 60 * 60 * 1000,
-            secure: true,
-        });
+        res.cookie('refreshToken', refreshToken, getRefreshCookieOptions());
         res.json({ accessToken });
     } catch (error) {
         console.error("Login error:", error);
@@ -60,7 +66,7 @@ export const logout = async (req, res) => {
             }
         });
 
-        res.clearCookie('refreshToken');
+        res.clearCookie('refreshToken', getRefreshCookieOptions());
         return res.status(200).json({ message: "Logged out successfully" });
     } catch (error) {
         console.error("Logout error:", error);
@@ -99,11 +105,7 @@ export const refresh = async (req, res) => {
                 id: adminId
             }
         });
-        res.cookie('refreshToken', newRefreshToken, {
-            httpOnly: true,
-            maxAge: 24 * 60 * 60 * 1000,
-            secure: true,
-        });
+        res.cookie('refreshToken', newRefreshToken, getRefreshCookieOptions());
 
         res.json({ accessToken });
 
