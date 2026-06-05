@@ -1,5 +1,6 @@
 import e from "express";
 import { Guide, Admin } from "../models/index.model.js"
+import { triggerRevalidate } from "../utils/revalidate.js";
 
 export const getGuides = async (req, res) => {
     try {
@@ -50,6 +51,8 @@ export const createGuide = async (req, res) => {
 
         const newGuide = await Guide.create({ title, content, slug, adminId: id, category, difficulty, thumbnail_url });
 
+        await triggerRevalidate("guides", newGuide.id);
+
         res.status(201).json(newGuide);
     } catch (error) {
         console.log(error);
@@ -78,6 +81,7 @@ export const updateGuide = async (req, res) => {
         }
 
         await guide.update({ title, content, category, difficulty, thumbnail_url });
+        await triggerRevalidate("guides", guide.id);
         res.json(guide);
     } catch (error) {
         console.log(error);

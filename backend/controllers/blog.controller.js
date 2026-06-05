@@ -1,4 +1,5 @@
 import { Blog, Admin } from "../models/index.model.js"
+import { triggerRevalidate } from "../utils/revalidate.js";
 
 export const getBlogs = async (req, res) => {
     try {
@@ -45,6 +46,7 @@ export const createBlog = async (req, res) => {
             counter++;
         }
         const newBlog = await Blog.create({ title, content, slug, adminId: id, thumbnail_url });
+        await triggerRevalidate("blogs", newBlog.id);
         res.status(201).json(newBlog);
     } catch (error) {
         console.log(error);
@@ -69,6 +71,7 @@ export const updateBlog = async (req, res) => {
             return res.status(403).json({ message: "You are not authorized to update this blog." });
         }
         await blog.update({ title, content, thumbnail_url });
+        await triggerRevalidate("blogs", blog.id);
         res.json(blog);
     } catch (error) {
         console.log(error);

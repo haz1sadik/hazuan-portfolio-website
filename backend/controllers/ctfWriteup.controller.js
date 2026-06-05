@@ -1,4 +1,5 @@
 import { CTFWriteup, Admin, CTFEvent } from "../models/index.model.js"
+import { triggerRevalidate } from "../utils/revalidate.js";
 
 export const getCTFWriteups = async (req, res) => {
     try {
@@ -49,6 +50,8 @@ export const createCTFWriteup = async (req, res) => {
 
         const newWriteup = await CTFWriteup.create({ title, content, slug, adminId: id, event_id: eventId, category, difficulty });
 
+        await triggerRevalidate("writeups", newWriteup.id);
+
         res.status(201).json(newWriteup);
     } catch (error) {
         console.log(error);
@@ -76,6 +79,7 @@ export const updateCTFWriteup = async (req, res) => {
         }
 
         await writeup.update({ title, content, category, difficulty, event_id: eventId });
+        await triggerRevalidate("writeups", writeup.id);
 
         res.json(writeup);
     } catch (error) {
