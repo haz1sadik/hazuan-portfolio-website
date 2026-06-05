@@ -1,9 +1,15 @@
-import React from 'react'
+import WriteupsClient from "./WriteupsClient";
 
-const WriteupsPage = () => {
+const WriteupsPage = async () => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+  const response = await fetch(`${baseUrl}/ctf-writeups`);
+  const writeups = response.ok ? await response.json() : [];
+
   return (
-    <div className='text-white'>WriteupsPage</div>
-  )
-}
+    <WriteupsClient
+      initialWriteups={Array.isArray(writeups) ? writeups : []}
+    />
+  );
+};
 
-export default WriteupsPage
+export default WriteupsPage;

@@ -6,9 +6,9 @@ import { usePathname, useRouter } from "next/navigation"
 
 const NAV_LINKS = [
     { label: "Home", href: "/home" },
-    { label: "Blogs", href: "/blogs" },
     { label: "Guides", href: "/guides" },
-    { label: "Write Ups", href: "/writeups" },
+    { label: "Blogs", href: "/blogs" },
+    { label: "Writeups", href: "/writeups" },
 ]
 
 export default function HomescreenLayout({ children }) {
@@ -97,14 +97,15 @@ export default function HomescreenLayout({ children }) {
     }
 
     return (
-        <section className="min-h-screen bg-[#26422d]">
+        <section className="relative min-h-screen overflow-hidden bg-[var(--layout-bg)]">
+            <div aria-hidden className="pointer-events-none fixed inset-0 z-0 lava-bg" />
             <nav className={`sticky top-4 z-50 px-3 transition-transform duration-300 ease-out will-change-transform sm:px-4 md:translate-y-0 ${isNavVisible ? "translate-y-0" : "-translate-y-44"}`}>
-                <div className="mx-auto flex w-full max-w-6xl flex-col items-stretch gap-4 rounded-[28px] border border-white/20 bg-hazuan-primary/50 px-4 py-4 shadow-[0_8px_30px_rgba(74,190,130,0.35)] backdrop-blur-sm sm:rounded-full sm:px-6 sm:py-3 md:flex-row md:items-center md:justify-between md:gap-6">
-                    <div className="flex items-center gap-3 justify-center">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 text-xs font-semibold text-white/90">
-                            LOGO
+                <div className="mx-auto flex w-full max-w-6xl flex-col items-stretch gap-4 rounded-[28px] border border-white/20 bg-[var(--layout-nav-bg)] px-4 py-4 shadow-[0_8px_30px_var(--layout-nav-shadow)] backdrop-blur-sm sm:rounded-full sm:px-6 sm:py-3 md:flex-row md:items-center md:justify-between md:gap-6">
+                    <div className="flex items-center gap-3 justify-center hover:cursor-pointer" onClick={(event) => handleNavigate(event, "/home")}>
+                        <div className="flex h-15 w-15 items-center justify-center rounded-full p-2 pt-2.5 bg-white/30 text-xs font-semibold text-white/90">
+                            <img src="/MHLogo.png" alt="Hazuan Logo" className="h-full w-full object-contain" />
                         </div>
-                        <span className="text-sm font-semibold uppercase tracking-[0.2em] text-white/80">Hazuan</span>
+                        <span className="text-lg font-black uppercase tracking-[0.1em] text-white/80">Muhammad Hazuan</span>
                     </div>
 
                     <div
@@ -126,7 +127,7 @@ export default function HomescreenLayout({ children }) {
                                         if (element) linkRefs.current.set(link.href, element)
                                     }}
                                     onClick={(event) => handleNavigate(event, link.href)}
-                                    className={`relative z-10 flex-1 rounded-full px-2 py-2 text-[11px] font-medium text-white/90 transition sm:flex-none sm:px-4 sm:text-sm ${isActive ? "text-white" : "hover:text-white"} text-center whitespace-nowrap`}
+                                    className={`relative z-10 flex-1 rounded-full px-2 py-2 text-[13px] font-bold text-white/90 transition sm:flex-none sm:px-4 sm:text-sm ${isActive ? "text-white" : "hover:text-white"} text-center whitespace-nowrap`}
                                 >
                                     {link.label}
                                 </Link>
@@ -135,7 +136,7 @@ export default function HomescreenLayout({ children }) {
                     </div>
                 </div>
             </nav>
-            <main className="mx-auto w-full max-w-6xl px-4 pt-10">
+            <main className="relative z-10 mx-auto w-full max-w-7xl px-4 pt-10">
                 <div className={`transition-opacity duration-300 ${isPageVisible ? "opacity-100" : "opacity-0"}`}>
                     {children}
                 </div>

@@ -5,6 +5,35 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --layout-bg: #0b1224;
+  --layout-nav-bg: rgba(37, 99, 235, 0.45);
+  --layout-nav-shadow: rgba(37, 99, 235, 0.35);
+  --layout-rect-strong-from: #3b82f6;
+  --layout-rect-strong-via: #1d4ed8;
+  --layout-rect-strong-to: #1e3a8a;
+  --layout-rect-mid-from: #1d4ed8;
+  --layout-rect-mid-via: #1e40af;
+  --layout-rect-mid-to: #172554;
+  --layout-rect-soft-from: #60a5fa;
+  --layout-rect-soft-via: #3b82f6;
+  --layout-rect-soft-to: #1e40af;
+  --layout-glow: rgba(96, 165, 250, 0.35);
+  --layout-lava-light: #bcc7e0;
+  --layout-lava-mid: #4f8ff0;
+  --layout-lava-dark: #091532;
+  --layout-lava-shadow: rgba(7, 19, 48, 0.9);
+  --layout-post-surface: #f8fbff;
+  --layout-post-border: rgba(148, 163, 184, 0.35);
+  --layout-post-text: #0f172a;
+  --layout-post-muted: #475569;
+  --layout-pill-category-bg: #dbeafe;
+  --layout-pill-category-text: #1d4ed8;
+  --layout-pill-beginner-bg: #dcfce7;
+  --layout-pill-beginner-text: #15803d;
+  --layout-pill-intermediate-bg: #fef3c7;
+  --layout-pill-intermediate-text: #b45309;
+  --layout-pill-advanced-bg: #fee2e2;
+  --layout-pill-advanced-text: #b91c1c;
 }
 
 @theme {
@@ -17,7 +46,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -25,11 +54,66 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --layout-bg: #0b1224;
+    --layout-nav-bg: rgba(37, 99, 235, 0.45);
+    --layout-nav-shadow: rgba(37, 99, 235, 0.35);
+    --layout-rect-strong-from: #60a5fa;
+    --layout-rect-strong-via: #2563eb;
+    --layout-rect-strong-to: #1e3a8a;
+    --layout-rect-mid-from: #2563eb;
+    --layout-rect-mid-via: #1e40af;
+    --layout-rect-mid-to: #172554;
+    --layout-rect-soft-from: #93c5fd;
+    --layout-rect-soft-via: #60a5fa;
+    --layout-rect-soft-to: #1e40af;
+    --layout-glow: rgba(147, 197, 253, 0.35);
+    --layout-lava-light: #c0d5ff;
+    --layout-lava-mid: #4f8ff0;
+    --layout-lava-dark: #091532;
+    --layout-lava-shadow: rgba(7, 19, 48, 0.9);
+    --layout-post-surface: #eef2ff;
+    --layout-post-border: rgba(148, 163, 184, 0.35);
+    --layout-post-text: #0f172a;
+    --layout-post-muted: #475569;
+    --layout-pill-category-bg: #dbeafe;
+    --layout-pill-category-text: #1d4ed8;
+    --layout-pill-beginner-bg: #dcfce7;
+    --layout-pill-beginner-text: #15803d;
+    --layout-pill-intermediate-bg: #fef3c7;
+    --layout-pill-intermediate-text: #b45309;
+    --layout-pill-advanced-bg: #fee2e2;
+    --layout-pill-advanced-text: #b91c1c;
   }
+}
+
+@keyframes lava-flow {
+  0% {
+    background-position: 0% 0%, 20% 30%, 80% 10%, 10% 80%, 90% 90%, 50% 50%;
+  }
+  50% {
+    background-position: 20% 10%, 40% 40%, 60% 20%, 30% 70%, 70% 80%, 45% 55%;
+  }
+  100% {
+    background-position: 10% 20%, 60% 60%, 40% 30%, 20% 90%, 80% 70%, 55% 45%;
+  }
+}
+
+.lava-bg {
+  background-color: var(--layout-bg);
+  background-image:
+    radial-gradient(50% 45% at 10% 15%, var(--layout-lava-light) 0 40%, transparent 55%),
+    radial-gradient(60% 55% at 35% 25%, var(--layout-lava-dark) 0 35%, transparent 55%),
+    radial-gradient(70% 60% at 70% 20%, var(--layout-lava-mid) 0 40%, transparent 60%),
+    radial-gradient(65% 55% at 20% 80%, var(--layout-lava-dark) 0 35%, transparent 55%),
+    radial-gradient(75% 60% at 80% 75%, var(--layout-lava-light) 0 40%, transparent 60%),
+    radial-gradient(100% 100% at 50% 50%, var(--layout-lava-shadow) 0 55%, transparent 70%);
+  background-size: 160% 160%, 140% 140%, 180% 180%, 160% 160%, 180% 180%, 220% 220%;
+  filter: blur(0.5px) contrast(1.05) saturate(1.1);
+  animation: lava-flow 12s ease-in-out infinite alternate;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
 }
