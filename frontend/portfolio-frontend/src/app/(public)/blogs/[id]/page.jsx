@@ -24,6 +24,8 @@ const buildContent = (html) => {
     return html;
 };
 
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
     const response = await fetch(`${baseUrl}/blogs`);
