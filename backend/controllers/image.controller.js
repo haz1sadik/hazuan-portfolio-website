@@ -19,7 +19,7 @@ async function getUrl(fileName, contentType) {
     const command = new PutObjectCommand({
         Bucket: process.env.R2_BUCKET_NAME,
         Key: fileName,
-        ContentType: "image/png", // Highly recommended to enforce file types
+        ContentType: "image/jpeg", // Highly recommended to enforce file types
         requestChecksumCalculation: "WHEN_REQUIRED",
         responseChecksumValidation: "WHEN_REQUIRED",
     });
