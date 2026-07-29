@@ -102,7 +102,7 @@ export default function HomescreenLayout({ children }) {
             <nav className={`sticky top-4 z-50 px-3 transition-transform duration-300 ease-out will-change-transform sm:px-4 md:translate-y-0 ${isNavVisible ? "translate-y-0" : "-translate-y-44"}`}>
                 <div className="mx-auto flex w-full max-w-6xl flex-col items-stretch gap-4 rounded-[28px] border border-white/20 bg-[var(--layout-nav-bg)] px-4 py-4 shadow-[0_8px_30px_var(--layout-nav-shadow)] backdrop-blur-sm sm:rounded-full sm:px-6 sm:py-3 md:flex-row md:items-center md:justify-between md:gap-6">
                     <div className="flex items-center gap-3 justify-center hover:cursor-pointer" onClick={(event) => handleNavigate(event, "/home")}>
-                        <div className="flex h-15 w-15 items-center justify-center rounded-full p-2 pt-2.5 bg-white/30 text-xs font-semibold text-white/90">
+                        <div className="flex h-15 w-15 items-center justify-center rounded-full p-2 pt-2.5 bg-white/50 text-xs font-semibold text-white/90">
                             <img src="/MHLogo.png" alt="Hazuan Logo" className="h-full w-full object-contain" />
                         </div>
                         <span className="text-lg font-black uppercase tracking-[0.1em] text-white/80">Muhammad Hazuan</span>
