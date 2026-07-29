@@ -55,9 +55,9 @@ const FOCUS_AREAS = [
 // Positions approximate an ellipse on the tilted radar disc.
 const RADAR_NODES = [
     { label: "Malware Analysis", top: "10%", left: "50%" },
-    { label: "Applied AI", top: "46%", left: "89%" },
-    { label: "Offensive Security", top: "84%", left: "50%" },
-    { label: "Incident Response", top: "46%", left: "11%" },
+    { label: "Applied AI", top: "46%", left: "88%" },
+    { label: "Incident Response", top: "84%", left: "50%" },
+    { label: "Offensive Sec", top: "46%", left: "15%" },
 ];
 
 const STATS = [
@@ -357,8 +357,8 @@ const RadarHUD = ({ stageRef, motionAllowed }) => {
                 ))}
             </div>
 
-            <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-full border border-white/10 bg-black/40 px-4 py-1.5 font-mono text-[0.58rem] uppercase text-center tracking-[0.25rem] text-cyan-200/80 backdrop-blur-md">
-                Always learning, always exploring
+            <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 rounded-full border border-white/10 bg-black/40 px-4 py-1.5 font-mono text-[0.58rem] uppercase text-center tracking-[0.25rem] text-cyan-200/80 backdrop-blur-md">
+                always exploring
             </div>
         </div>
     );
@@ -681,7 +681,7 @@ export default function HomeLanding({ blogs = [], guides = [], writeups = [] }) 
                             <div className="space-y-4 sm:space-y-5">
                                 <h1
                                     ref={heroRef}
-                                    className="max-w-3xl text-[clamp(2rem,8.3vw,6.3rem)] font-black leading-[0.9] tracking-[-0.08em] sm:text-[clamp(2.7rem,5.4vw,3rem)]"
+                                    className="max-w-3xl text-[clamp(1.2rem,7vw,5.5rem)] font-black leading-[0.9] tracking-[-0.08em] sm:text-[clamp(2.7rem,5.4vw,2rem)]"
                                     style={{ transform: "translate3d(0, calc(var(--hero-parallax, 0px) * -0.1), 0)" }}
                                     aria-live="polite"
                                     aria-atomic="true"
