@@ -45,8 +45,8 @@ const BlogPage = () => {
       </div>
       <PostCardList
         posts={posts}
-        getEditHref={(post) => `/admin/dashboard/blogs/${post.slug}/edit`}
-        getDeleteHref={(post) => `/admin/dashboard/blogs/${post.slug}/delete`}
+        getEditHref={(post) => `/admin/dashboard/blogs/edit?slug=${post.slug}`}
+        getDeleteHref={(post) => `/admin/dashboard/blogs/delete?slug=${post.slug}`}
         getDeleteHandler={(post) => () => handleDelete(post)}
       />
     </div>

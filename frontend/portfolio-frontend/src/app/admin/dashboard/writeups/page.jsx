@@ -124,8 +124,8 @@ const WriteupPage = () => {
             </h2>
             <PostCardList
               posts={writeups}
-              getEditHref={(post) => `/admin/dashboard/writeups/${post.slug}/edit`}
-              getDeleteHref={(post) => `/admin/dashboard/writeups/${post.slug}/delete`}
+              getEditHref={(post) => `/admin/dashboard/writeups/edit?slug=${post.slug}`}
+              getDeleteHref={(post) => `/admin/dashboard/writeups/delete?slug=${post.slug}`}
               getDeleteHandler={(post) => () => handleDelete(post)}
             />
             <hr className="border-gray-200 border-2 lg:mx-15 2xl:mx-55" />

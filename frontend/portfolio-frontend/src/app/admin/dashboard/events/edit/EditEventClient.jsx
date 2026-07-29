@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useMemo, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import TextInputField from "@/components/ui/input/TextInputField";
 import PrimaryButton from "@/components/ui/buttons/PrimaryButton";
 import RichTextEditor from "@/components/common/RichTextEditor";
@@ -26,11 +26,11 @@ const toInputDateTime = (value) => {
     return localDate.toISOString().slice(0, 16);
 };
 
-const EditEventPage = () => {
+const EditEventClient = () => {
     const { accessToken } = useAuth();
-    const params = useParams();
+    const searchParams = useSearchParams();
     const router = useRouter();
-    const slug = useMemo(() => params?.slug, [params]);
+    const slug = searchParams.get("slug");
 
     const [eventId, setEventId] = useState(null);
     const [name, setName] = useState("");
@@ -42,32 +42,34 @@ const EditEventPage = () => {
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
 
-    const resolveEventId = async (value) => {
-        if (!value) return null;
-        const res = await api.get("/ctf-events");
-        const match = res.data?.find(
-            (item) => item.slug === value || item.id === value
-        );
-        return match?.id || value;
-    };
-
     useEffect(() => {
         let isMounted = true;
+
         const loadEvent = async () => {
-            if (!slug) return;
+            if (!slug) {
+                setError("Missing event slug.");
+                setIsLoading(false);
+                return;
+            }
+
             setIsLoading(true);
             setError(null);
 
             try {
-                const id = await resolveEventId(slug);
+                const res = await api.get("/ctf-events");
+                const match = res.data?.find((item) => item.slug === slug || item.id === slug);
+                const id = match?.id || slug;
+
                 if (!id) throw new Error("Event not found.");
-                const res = await api.get(`/ctf-events/${id}`);
+
+                const eventRes = await api.get(`/ctf-events/${id}`);
                 if (!isMounted) return;
-                setEventId(res.data?.id || id);
-                setName(res.data?.name || "");
-                setDescription(res.data?.description || "");
-                setDate(toInputDateTime(res.data?.date));
-                setThumbnailUrl(res.data?.thumbnail_url || "");
+
+                setEventId(eventRes.data?.id || id);
+                setName(eventRes.data?.name || "");
+                setDescription(eventRes.data?.description || "");
+                setDate(toInputDateTime(eventRes.data?.date));
+                setThumbnailUrl(eventRes.data?.thumbnail_url || "");
             } catch (err) {
                 if (!isMounted) return;
                 setError(err?.response?.data?.message || "Failed to load event.");
@@ -97,12 +99,7 @@ const EditEventPage = () => {
             setIsSubmitting(true);
             await api.put(
                 `/ctf-events/${eventId}`,
-                {
-                    name,
-                    description,
-                    date: toIsoString(date),
-                    thumbnail_url: thumbnailUrl || null,
-                },
+                { name, description, date: toIsoString(date), thumbnail_url: thumbnailUrl || null },
                 { headers: { Authorization: `Bearer ${accessToken}` } }
             );
             setSuccess("Event updated successfully.");
@@ -129,53 +126,22 @@ const EditEventPage = () => {
                 <h1 className="text-2xl font-semibold text-gray-900">Edit Event</h1>
             </div>
 
-            <form
-                onSubmit={handleSubmit}
-                className="flex flex-col gap-6 rounded-3xl border border-gray-100 bg-white p-6 shadow-[0_2px_10px_0_rgba(0,0,0,0.05)]"
-            >
+            <form onSubmit={handleSubmit} className="flex flex-col gap-6 rounded-3xl border border-gray-100 bg-white p-6 shadow-[0_2px_10px_0_rgba(0,0,0,0.05)]">
                 {isLoading ? (
                     <p className="text-sm text-gray-500">Loading event...</p>
                 ) : (
                     <>
                         <div className="flex flex-wrap gap-6">
-                            <TextInputField
-                                label="Name"
-                                name="name"
-                                placeholder="Enter event name"
-                                value={name}
-                                onChange={(event) => setName(event.target.value)}
-                                required
-                            />
-
-                            <TextInputField
-                                label="Date"
-                                name="date"
-                                type="datetime-local"
-                                value={date}
-                                onChange={(event) => setDate(event.target.value)}
-                                required
-                            />
+                            <TextInputField label="Name" name="name" placeholder="Enter event name" value={name} onChange={(event) => setName(event.target.value)} required />
+                            <TextInputField label="Date" name="date" type="datetime-local" value={date} onChange={(event) => setDate(event.target.value)} required />
                         </div>
 
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="description" className="text-md text-black">
-                                Description
-                            </label>
-                            <RichTextEditor
-                                value={description}
-                                onChange={setDescription}
-                                onImageUpload={handleImageUpload}
-                                placeholder="Write your event description here..."
-                            />
+                            <label htmlFor="description" className="text-md text-black">Description</label>
+                            <RichTextEditor value={description} onChange={setDescription} onImageUpload={handleImageUpload} placeholder="Write your event description here..." />
                         </div>
 
-                        <ThumbnailUpload
-                            label="Thumbnail"
-                            value={thumbnailUrl}
-                            onChange={setThumbnailUrl}
-                            onUpload={handleThumbnailUpload}
-                            disabled={isSubmitting}
-                        />
+                        <ThumbnailUpload label="Thumbnail" value={thumbnailUrl} onChange={setThumbnailUrl} onUpload={handleThumbnailUpload} disabled={isSubmitting} />
                     </>
                 )}
 
@@ -183,15 +149,11 @@ const EditEventPage = () => {
                 {success && <p className="text-sm text-green-600">{success}</p>}
 
                 <div className="flex justify-end">
-                    <PrimaryButton
-                        type="submit"
-                        text={isSubmitting ? "Saving..." : "Save Changes"}
-                        disabled={isSubmitting || isLoading}
-                    />
+                    <PrimaryButton type="submit" text={isSubmitting ? "Saving..." : "Save Changes"} disabled={isSubmitting || isLoading} />
                 </div>
             </form>
         </div>
     );
 };
 
-export default EditEventPage;
+export default EditEventClient;

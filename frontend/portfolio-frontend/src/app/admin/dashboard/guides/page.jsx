@@ -44,8 +44,8 @@ const GuidePage = () => {
       </div>
       <PostCardList
         posts={posts}
-        getEditHref={(post) => `/admin/dashboard/guides/${post.slug}/edit`}
-        getDeleteHref={(post) => `/admin/dashboard/guides/${post.slug}/delete`}
+        getEditHref={(post) => `/admin/dashboard/guides/edit?slug=${post.slug}`}
+        getDeleteHref={(post) => `/admin/dashboard/guides/delete?slug=${post.slug}`}
         getDeleteHandler={(post) => () => handleDelete(post)}
       />
     </div>

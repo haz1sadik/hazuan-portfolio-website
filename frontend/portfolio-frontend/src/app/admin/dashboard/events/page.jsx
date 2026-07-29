@@ -71,8 +71,8 @@ const EventPage = () => {
       ) : (
         <PostCardList
           posts={formattedEvents}
-          getEditHref={(eventItem) => `/admin/dashboard/events/${eventItem.slug}/edit`}
-          getDeleteHref={(eventItem) => `/admin/dashboard/events/${eventItem.slug}/delete`}
+          getEditHref={(eventItem) => `/admin/dashboard/events/edit?slug=${eventItem.slug}`}
+          getDeleteHref={(eventItem) => `/admin/dashboard/events/delete?slug=${eventItem.slug}`}
           getDeleteHandler={(eventItem) => () => handleDelete(eventItem)}
         />
       )}
