@@ -345,12 +345,12 @@ const RadarHUD = ({ stageRef, motionAllowed }) => {
                         style={{ top: node.top, left: node.left, transform: "translate(-50%, -50%)" }}
                     >
                         <span className="relative flex h-2.5 w-2.5">
-                            {motionAllowed ? (
+                            {/* {motionAllowed ? (
                                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-300 opacity-60" />
-                            ) : null}
-                            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(56,189,248,0.85)]" />
+                            ) : null} */}
+                            {/* <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(56,189,248,0.85)]" /> */}
                         </span>
-                        <span className="mt-2 whitespace-nowrap rounded-full border border-white/10 bg-black/50 px-2.5 py-1 font-mono text-[0.55rem] uppercase tracking-[0.16em] text-white/70 backdrop-blur-sm">
+                        <span className="mt-2 whitespace-nowrap rounded-full border border-white/10 bg-black/50 animate-pulse shadow-[0_0_12px_rgba(56,189,248,0.85)] px-2.5 py-1 font-mono text-[0.55rem] uppercase tracking-[0.16em] text-white/70 backdrop-blur-sm">
                             {node.label}
                         </span>
                     </div>
